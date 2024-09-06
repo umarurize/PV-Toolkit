@@ -11,3 +11,8 @@ This program is developed for the relevant instruments of the ***Institute of Fu
 
 ### 2 - steady-state-current-helper
 This function will help you find the smoothest part of the steady-state current curve and calculate the most accurate current value.
+
+### 3 - eqe-helper
+This function will reprocess the original data and calculate the integrated current. 
+
+## How to use
