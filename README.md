@@ -16,11 +16,31 @@ This function will help you find the smoothest part of the steady-state current 
 This function will reprocess the original data and calculate the integrated current. 
 
 ## How to use
-Run the PV-Toolkit.exe and 
+Run the PV-Toolkit.exe and call the function according to the prompts. For different functions, you need to preliminarily organize the data files according to the following requirements.
+### 1 - iv-helper
+:arrow_forward: Before running this function, you should organize your data files like the following.
 * First folder (you can name it as you like)
   * Second folder1 (you can name it as you like)
     * data1.txt
     * data2.txt
     * ...
-  * Second folder2 (you can name it as you like) 
-      
+  * Second folder2 (you can name it as you like)
+    *  data3.txt
+    *  ...
+  * ...
+ 
+:arrow_forward: After running iv-helper, your data files will look like the following.
+* First folder (you can name it as you like)
+  * Second folder1 (you can name it as you like)
+    * data1.txt
+    * data2.txt
+    * ...
+  * Second folder2 (you can name it as you like)
+    *  data3.txt
+    *  ...
+  * ...
+   * **First folder.xlsx**
+   * **Statistical data.xlsx**
+### 2 - steady-state-current-helper
+:arrow_forward: Before running this function, you should organize your data files like the following.
+
