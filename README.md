@@ -16,3 +16,11 @@ This function will help you find the smoothest part of the steady-state current 
 This function will reprocess the original data and calculate the integrated current. 
 
 ## How to use
+Run the PV-Toolkit.exe and 
+* First folder (you can name it as you like)
+  * Second folder1 (you can name it as you like)
+    * data1.txt
+    * data2.txt
+    * ...
+  * Second folder2 (you can name it as you like) 
+      
