@@ -43,4 +43,44 @@ Run the PV-Toolkit.exe and call the function according to the prompts. For diffe
    * **Statistical data.xlsx**
 ### 2 - steady-state-current-helper
 :arrow_forward: Before running this function, you should organize your data files like the following.
+* First folder (you can name it as you like)
+  * Second folder1 (you can name it as you like)
+    * data1.txt
+    * data2.txt
+    * ...
+  * Second folder2 (you can name it as you like)
+    *  data3.txt
+    *  ...
+  * ...
+
+:arrow_forward: After running steady-state-current-helper, your data files will look like the following.
+* First folder (you can name it as you like)
+  * Second folder1 (you can name it as you like)
+    * data1.txt
+    * data2.txt
+    * ...
+  * Second folder2 (you can name it as you like)
+    *  data3.txt
+    *  ...
+  * ...
+   * **First folder.xlsx**
+### 3 - eqe-helper
+:arrow_forward: Before running this function, you should organize your data files like the following.
+* First folder (you can name it as you like)
+  * data1.txt
+  * data2.txt
+  * ...
+    
+
+:arrow_forward: After running eqe-helper, your data files will look like the following.
+:arrow_forward: Before running this function, you should organize your data files like the following.
+* First folder (you can name it as you like)
+  * data1.txt
+  * data2.txt
+  * ...
+  * **First folder.xlsx**
+ 
+## Other Info
+None.
+
 
