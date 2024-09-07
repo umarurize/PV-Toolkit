@@ -28,7 +28,7 @@ Run the PV-Toolkit.exe and call the function according to the prompts. For diffe
     *  data3.txt
     *  ...
   * ...
- 
+   
 :arrow_forward: After running iv-helper, your data files will look like the following.
 * First folder (you can name it as you like)
   * Second folder1 (you can name it as you like)
@@ -73,7 +73,6 @@ Run the PV-Toolkit.exe and call the function according to the prompts. For diffe
     
 
 :arrow_forward: After running eqe-helper, your data files will look like the following.
-:arrow_forward: Before running this function, you should organize your data files like the following.
 * First folder (you can name it as you like)
   * data1.txt
   * data2.txt
