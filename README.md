@@ -40,6 +40,7 @@ Run the PV-Toolkit.exe and call the function according to the prompts. For diffe
   * ...
    * **First folder.xlsx**
    * **Statistical data.xlsx**
+   * **JV_curve_data.xlsx**
 ### 2 - steady-state-current-helper
 :arrow_forward: Before running this function, you should organize your data files like the following.
 * First folder (you can name it as you like)
