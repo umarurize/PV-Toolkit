@@ -4,14 +4,16 @@ import numpy
 from xlsxwriter import Workbook
 
 
-def data_process(path: str):
+def data_process_three(path: str, device_area: str):
     # Read config
     dir = os.getcwd()
-    config_path = os.path.join(dir, 'configurations', '319 - IV Helper', 'config.json')
+    config_path = os.path.join(dir, 'configurations', '319[1] - IV Helper', 'config.json')
     with open(config_path, 'r', encoding='utf-8') as f:
         config_data = json.loads(f.read())
 
     path = path.replace('/', '\\')
+
+    device_area = eval(device_area)
 
     # Set the name for result workbook
     index = path.rfind('\\')
@@ -55,25 +57,21 @@ def data_process(path: str):
     file_list = os.listdir(path)
 
     for i, file in enumerate(file_list, start=1):
-        single_data = [file.strip('.txt')]
+        single_data = [file.strip('.csv'), device_area]
         recorder = []
 
         file_path = os.path.join(path, file)
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
 
-            # Get device area
-            area = eval(lines[6].strip('Device area (cm^2) = ').strip('\n'))
-            single_data.append(area)
-
             # Get all points data
-            point_data = []
-            for line in lines[10:]:
-                content = line.strip('\n').split('\t')
+            point_data =[]
+            for line in lines[35:]:
+                content = line.strip('\n').split(',')
                 point_data.append(
                     [
-                        eval(content[0]),
-                        eval(content[1])
+                        eval(eval(content[2])),
+                        eval(eval(content[3]))
                     ]
                 )
 
@@ -100,7 +98,7 @@ def data_process(path: str):
                 else:
                     Jsc = data[1] - data[0] * ((next_point[1] - data[1]) / (next_point[0] - data[0]))
                     recorder.append(Jsc)
-                    single_data.append(abs(round(Jsc, 4)))
+                    single_data.append(abs(round(Jsc * 1000 / device_area, 4)))
                     break
 
             # Calculate P_max
@@ -110,14 +108,14 @@ def data_process(path: str):
                         and
                         numpy.sign(data[1]) == numpy.sign(recorder[1])
                 ):
-                    temple_list.append(abs(data[0] * data[1]))
+                    temple_list.append(abs(data[0] * data[1] * 1000 / device_area))
             P_max = max(temple_list)
 
-            FF = P_max / abs(recorder[0] * recorder[1])
+            FF = P_max / abs(recorder[0] * recorder[1] * 1000 / device_area)
             recorder.append(FF)
             single_data.append(round(FF * 100, 4))
 
-            PCE = abs(recorder[0] * recorder[1] * recorder[2])
+            PCE = abs(recorder[0] * recorder[1] * recorder[2] * 1000 / device_area)
             single_data.append(round(PCE, 4))
 
             # Judge the sweep mode
@@ -151,9 +149,11 @@ def data_process(path: str):
     for data_to_write in totale_data:
         if row_num <= len(totale_data):
             for i in range(7):
+
                 result_worksheet.write(row_num, i, data_to_write[i], result_workbook_format_1)
         row_num += 1
 
     result_workbook.close()
+
 
 

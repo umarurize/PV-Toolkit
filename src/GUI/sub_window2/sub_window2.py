@@ -8,7 +8,7 @@ from GUI.sub_window2.sub_window22 import SubWindow22
 
 # SubWindow2 - 1428 IV Helper
 class SubWindow2(QWidget):
-    def __init__(self, main_window):
+    def __init__(self, main_window: QWidget):
         super().__init__()
         self.main_window = main_window
         self.initUI()
@@ -41,20 +41,20 @@ class SubWindow2(QWidget):
         self.setWindowIcon(icon)
         self.setWindowTitle('1428 - IV Helper')
 
-        self.sub_window_21 = SubWindow21(self)
-        self.sub_window_22 = SubWindow22(self)
+        self.sub_window21 = SubWindow21(self)
+        self.sub_window22 = SubWindow22(self)
 
     def open_sub_window21(self):
         pos = self.pos()
         self.hide()
-        self.sub_window_21.move(pos)
-        self.sub_window_21.show()
+        self.sub_window21.move(pos)
+        self.sub_window21.show()
 
     def open_sub_window22(self):
         pos = self.pos()
         self.hide()
-        self.sub_window_22.move(pos)
-        self.sub_window_22.show()
+        self.sub_window22.move(pos)
+        self.sub_window22.show()
 
     def back(self):
         pos = self.pos()

@@ -3,11 +3,12 @@ import os
 import json
 
 import numpy
+from xlsxwriter import Workbook
 import plotly.graph_objs as go
 import plotly.io as pio
 
 
-def curve_preview(path: str):
+def curve_preview_three(path: str, device_area: str):
     # Read config
     dir = os.getcwd()
     config_path = os.path.join(dir, 'configurations', '319[1] - IV Helper', 'config.json')
@@ -15,6 +16,8 @@ def curve_preview(path: str):
         config_data = json.loads(f.read())
 
     path = path.replace('/', '\\')
+
+    device_area = eval(device_area)
 
     pre_Voc_list = []
     pre_Jsc_list = []
@@ -24,23 +27,19 @@ def curve_preview(path: str):
     recorder = []
 
     index = path.rfind('\\')
-    result = [path[index+1:]]
+    result = [path[index+1:], device_area]
 
     with open(path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-        # Get device area
-        area = eval(lines[6].strip('Device area (cm^2) = ').strip('\n'))
-        result.append(area)
-
-        for line in lines[10:]:
-            content = line.strip('\n').split('\t')
-            pre_Voc_list.append(eval(content[0]))
-            pre_Jsc_list.append(eval(content[1]))
+        for line in lines[35:]:
+            content = line.strip('\n').split(',')
+            pre_Voc_list.append(eval(eval(content[2])))
+            pre_Jsc_list.append(eval(eval(content[3])) * 1000 / device_area)
             point_data.append(
                 [
-                    eval(content[0]),
-                    eval(content[1])
+                    eval(eval(content[2])),
+                    eval(eval(content[3]))
                 ]
             )
 
@@ -67,24 +66,25 @@ def curve_preview(path: str):
             else:
                 Jsc = data[1] - data[0] * ((next_point[1] - data[1]) / (next_point[0] - data[0]))
                 recorder.append(Jsc)
-                result.append(abs(round(Jsc, 4)))
+                result.append(abs(round(Jsc * 1000 / device_area, 4)))
                 break
 
         # Calculate P_max
         temple_list = []
         for data in point_data:
-            if (numpy.sign(data[0]) == numpy.sign(recorder[0])
-                    and
-                    numpy.sign(data[1]) == numpy.sign(recorder[1])
+            if (
+                numpy.sign(data[0]) == numpy.sign(recorder[0])
+                and
+                numpy.sign(data[1]) == numpy.sign(recorder[1])
             ):
-                temple_list.append(abs(data[0] * data[1]))
+                temple_list.append(abs(data[0] * data[1] * 1000 / device_area))
         P_max = max(temple_list)
 
-        FF = P_max / abs(recorder[0] * recorder[1])
+        FF = P_max / abs(recorder[0] * recorder[1] * 1000 / device_area)
         recorder.append(FF)
         result.append(round(FF * 100, 4))
 
-        PCE = abs(recorder[0] * recorder[1] * recorder[2])
+        PCE = abs(recorder[0] * recorder[1] * recorder[2] * 1000 / device_area)
         result.append(round(PCE, 4))
 
         # Judge the sweep mode
@@ -111,6 +111,7 @@ def curve_preview(path: str):
             Jsc_list = pre_Jsc_list
 
         fig = go.Figure()
+
         fig.add_trace(
             go.Scatter(
                 x=Voc_list,
@@ -142,7 +143,7 @@ def curve_preview(path: str):
                 gridcolor='black',
                 linecolor='black',
                 linewidth=3,
-                zerolinecolor = 'black',
+                zerolinecolor='black',
                 mirror=True,
                 tickfont=dict(
                     size=20,
@@ -152,7 +153,8 @@ def curve_preview(path: str):
             ),
             plot_bgcolor='white',
             paper_bgcolor='white',
-            margin=dict(l=55, r=65, t=45, b=55)
+            margin=dict(l=55, r=65, t=45, b=55),
+            showlegend=False
         )
 
         img_byte_arr = io.BytesIO()
@@ -161,3 +163,71 @@ def curve_preview(path: str):
         result.append(img_byte_arr)
 
     return result
+
+
+def type_transfer_two(path: str, device_area: str):
+    path = path.replace('/', '\\')
+
+    device_area = eval(device_area)
+
+    index = path.rfind('\\')
+    workbook_name = path[index+1:].strip('.csv') + '.xlsx'
+    workbook_path = os.path.join(path[0: index+1], workbook_name)
+
+    workbook = Workbook(workbook_path)
+
+    workbook_format_1 = workbook.add_format(
+        {
+            'align': 'center'
+        }
+    )
+    workbook_format_2 = workbook.add_format(
+        {
+            'align': 'center',
+            'font_color': 'red',
+            'bold': True
+        }
+    )
+
+    worksheet = workbook.add_worksheet('curve')
+    sheet_header_list = [
+        'Voc',
+        'Jsc'
+    ]
+    for i in range(len(sheet_header_list)):
+        worksheet.write(0, i, sheet_header_list[i], workbook_format_2)
+
+    raw_data = []
+    with open(path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+        for line in lines[35:]:
+            content = line.strip('\n').split(',')
+            raw_data.append(
+                [
+                    eval(eval(content[2])),
+                    eval(eval(content[3])) * 1000 / device_area
+                ]
+            )
+
+    row_num = 1
+    for data in raw_data:
+        if row_num <= len(raw_data):
+            for i in range(2):
+                worksheet.write(row_num, i, data[i], workbook_format_1)
+            row_num += 1
+
+    workbook.close()
+
+
+
+
+
+
+
+
+
+
+
+
+

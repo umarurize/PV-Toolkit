@@ -3,11 +3,11 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QProgressBar, QTableWidget
 
 
-# SubWindow11ProgressForm
-class SubWindow11ProgressForm(QWidget):
-    def __init__(self, sub_window11: QWidget):
+# SubWindow31ProgressForm
+class SubWindow31ProgressForm(QWidget):
+    def __init__(self, sub_window31: QWidget):
         super().__init__()
-        self.sub_window11 = sub_window11
+        self.sub_window31 = sub_window31
         self.initUI()
         self.setFixedSize(400, 300)
 
@@ -18,11 +18,11 @@ class SubWindow11ProgressForm(QWidget):
 
         icon = QIcon('resources/logo.ico')
 
-        self.progress_bar_label = QLabel('> Progressing...', self)
+        self.progress_bar_label = QLabel('> Processing...', self)
 
         self.progress_bar = QProgressBar(self)
 
-        self.result_intime_box_text = QLabel('> Result intime')
+        self.result_intime_box_text = QLabel('> Result intime', self)
         self.result_intime_box_text.hide()
 
         self.result_intime_sheet = QTableWidget(self)
@@ -49,7 +49,7 @@ class SubWindow11ProgressForm(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('319 - Output report')
+        self.setWindowTitle('319[1] - Output report')
 
     def set_progress(self, value, total):
         self.progress_bar.setRange(0, total)
@@ -58,6 +58,6 @@ class SubWindow11ProgressForm(QWidget):
     def back(self):
         pos = self.pos()
         self.hide()
-        self.sub_window11.reset_layout()
-        self.sub_window11.move(pos)
-        self.sub_window11.show()
+        self.sub_window31.reset_layout()
+        self.sub_window31.move(pos)
+        self.sub_window31.show()

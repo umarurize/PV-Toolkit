@@ -45,11 +45,11 @@ def data_process_two(path: str, device_area: str):
         'Device area (cm^2)',
         'Voc_1 (V)',
         'Jsc_1 (mA/cm^2)',
-        'FF_1',
+        'FF_1 (%)',
         'PCE_1 (%)',
         'Voc_2 (V)',
         'Jsc_2 (mA/cm^2)',
-        'FF_2',
+        'FF_2 (%)',
         'PCE_2 (%)'
     ]
     for i in range(len(sheet_header_list)):
@@ -124,7 +124,7 @@ def data_process_two(path: str, device_area: str):
             P_max_reverse = max(temple_list_reverse)
 
             FF_reverse = P_max_reverse / abs(recorder_reverse[0] * recorder_reverse[1] * 1000 / device_area)
-            single_data.append(round(FF_reverse, 4))
+            single_data.append(round(FF_reverse * 100, 4))
             recorder_reverse.append(FF_reverse)
 
             PCE_reverse = abs(recorder_reverse[0] * recorder_reverse[1] * recorder_reverse[2] * 1000 / device_area)
@@ -164,7 +164,7 @@ def data_process_two(path: str, device_area: str):
             P_max_forward = max(temple_list_forward)
 
             FF_forward = P_max_forward / abs(recorder_forward[0] * recorder_forward[1] * 1000 / device_area)
-            single_data.append(round(FF_forward, 4))
+            single_data.append(round(FF_forward * 100, 4))
             recorder_forward.append(FF_forward)
 
             PCE_forward = abs(recorder_forward[0] * recorder_forward[1] * recorder_forward[2] * 1000 / device_area)

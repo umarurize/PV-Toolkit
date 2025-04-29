@@ -11,7 +11,7 @@ from Functions.iv_helper_two import data_process_two
 
 # SubWindow21 - 1428 Output report
 class SubWindow21(QWidget):
-    def __init__(self, sub_window2):
+    def __init__(self, sub_window2: QWidget):
         super().__init__()
         self.sub_window2 = sub_window2
         self.initUI()
@@ -64,7 +64,8 @@ class SubWindow21(QWidget):
                     file_list = os.listdir(path)
                     type_check = []
                     for file in file_list:
-                        if file.split('.')[1] == 'txt':
+                        index = file.rfind('.')
+                        if file[index+1:] == 'txt':
                             type_check.append(True)
                         else:
                             type_check.append(False)
@@ -149,4 +150,3 @@ class SubWindow21(QWidget):
         )
         self.sub_window21_progress_form.result_message.show()
         self.sub_window21_progress_form.button.show()
-        self.reset_layout()

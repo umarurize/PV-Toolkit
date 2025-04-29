@@ -2,18 +2,18 @@ import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit
 
-from GUI.sub_window2.sub_window22_curve_preview_form import Subwindow22CurvePreviewForm
+from GUI.sub_window3.sub_window32_curve_preview_form import SubWindow32CurvePreviewForm
 
-from Functions.iv_curve_preview_two import curve_preview_two
+from Functions.iv_curve_preview_three import curve_preview_three
 
 
-# SubWindow22 - 1428 Preview and transfer J-V curve
-class SubWindow22(QWidget):
-    def __init__(self, sub_window2: QWidget):
+# SubWindow32 - 319[1] Preview and tarnsfer J-V curve
+class SubWindow32(QWidget):
+    def __init__(self, sub_window3: QWidget):
         super().__init__()
-        self.sub_window2 = sub_window2
+        self.sub_window3 = sub_window3
         self.initUI()
         self.setFixedSize(400, 300)
         self.setAcceptDrops(True)
@@ -27,7 +27,7 @@ class SubWindow22(QWidget):
 
         self.prompt_label = QLabel(
             '> Please drag the target file here...\n'
-            '> Only .txt file is accepted...',
+            '> Only .csv file is accepted...',
             self
         )
 
@@ -53,7 +53,7 @@ class SubWindow22(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('1428 - Preview and transfer J-V curve')
+        self.setWindowTitle('319[1] - Preview and transfer J-V curve')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() and len(event.mimeData().urls()) == 1:
@@ -62,7 +62,7 @@ class SubWindow22(QWidget):
                 path = url.toLocalFile()
                 if os.path.isfile(path):
                     index = path.rfind('.')
-                    if path[index+1:] == 'txt':
+                    if path[index+1:] == 'csv':
                         event.accept()
                         return
         event.ignore()
@@ -70,7 +70,7 @@ class SubWindow22(QWidget):
     def dropEvent(self, event: QDropEvent):
         url = event.mimeData().urls()[0]
         path = url.toLocalFile()
-        self.prompt_label.setText('> Ready for previewing...')
+        self.prompt_label.setText('> Ready for previwing...')
         self.path_label.setText(f'> File path\n{path}')
         self.path_label.show()
         self.text_input.show()
@@ -80,20 +80,18 @@ class SubWindow22(QWidget):
     def reset_layout(self):
         self.prompt_label.setText(
             '> Please drag the target file here...\n'
-            '> Only .txt file is accepted...'
+            '> Only .csv file is accepted...',
         )
         self.path_label.hide()
         self.text_input.hide()
-        # Remember the last device area input
-        '''self.text_input.setText('')'''
         self.button1.hide()
 
     def back(self):
         pos = self.pos()
         self.hide()
         self.reset_layout()
-        self.sub_window2.move(pos)
-        self.sub_window2.show()
+        self.sub_window3.move(pos)
+        self.sub_window3.show()
 
     def check(self):
         try:
@@ -112,41 +110,20 @@ class SubWindow22(QWidget):
         pos = self.pos()
         self.hide()
 
-        self.sub_window22_curve_preview_form = Subwindow22CurvePreviewForm(self)
+        self.sub_window32_curve_preview_form = SubWindow32CurvePreviewForm(self)
 
         path = self.path_label.text().split('\n')[1]
 
         area = self.text_input.text()
 
-        data_in_time = curve_preview_two(path, area)
+        data_intime = curve_preview_three(path, area)
 
-        if len(data_in_time) == 2:
+        if len(data_intime) == 2:
             result_text = ('> Result\n'
                            'Whoops! It is a bad data...')
-            self.sub_window22_curve_preview_form.result.setText(result_text)
+            self.sub_window32_curve_preview_form.result.setText(result_text)
         else:
-            result_text = ('> Result\n'
-                           f'Name: {data_in_time[0]}\n'
-                           f'Area: {data_in_time[1]}\n')
-            HI = str(round((data_in_time[5] - data_in_time[9]) / data_in_time[5], 4))
-            result_text += f'HI: {HI}'
-
-            for i in range(2):
-                row_count = self.sub_window22_curve_preview_form.result_sheet.rowCount()
-                self.sub_window22_curve_preview_form.result_sheet.insertRow(row_count)
-                if i == 0:
-                    result = ['Reverse'] + [str(i) for i in data_in_time[2:6]]
-                else:
-                    result = ['Forward'] + [str(i) for i in data_in_time[6:10]]
-                for col in range(5):
-                    item = QTableWidgetItem(result[col])
-                    self.sub_window22_curve_preview_form.result_sheet.setItem(
-                        row_count,
-                        col,
-                        item
-                    )
-
-            img_bytes = data_in_time[-1].read()
+            img_bytes = data_intime[-1].read()
 
             img = QImage()
             img.loadFromData(img_bytes)
@@ -156,11 +133,27 @@ class SubWindow22(QWidget):
             height = 300
             pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
 
-            self.sub_window22_curve_preview_form.result.setText(result_text)
-            self.sub_window22_curve_preview_form.result_sheet.show()
-            self.sub_window22_curve_preview_form.preview.setPixmap(pixmap)
-            self.sub_window22_curve_preview_form.preview.show()
-            self.sub_window22_curve_preview_form.button1.show()
+            result_text = '> Result\n'
+            result_text += f'Name: {data_intime[0]}\n'
+            result_text += f'Area: {data_intime[1]}\n'
+            result_text += f'Voc: {data_intime[2]}\n'
+            result_text += f'Jsc: {data_intime[3]}\n'
+            result_text += f'FF: {data_intime[4]}\n'
+            result_text += f'PCE: {data_intime[5]}\n'
+            result_text += f'Mode: {data_intime[6]}'
 
-        self.sub_window22_curve_preview_form.move(pos)
-        self.sub_window22_curve_preview_form.show()
+            self.sub_window32_curve_preview_form.result.setText(result_text)
+
+            self.sub_window32_curve_preview_form.preview.setPixmap(pixmap)
+            self.sub_window32_curve_preview_form.preview.show()
+            self.sub_window32_curve_preview_form.button1.show()
+
+        self.sub_window32_curve_preview_form.move(pos)
+        self.sub_window32_curve_preview_form.show()
+
+
+
+
+
+
+

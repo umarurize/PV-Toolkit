@@ -6,11 +6,11 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox
 
 
-# SubWindow13 - Reload configurations
-class SubWindow13(QWidget):
-    def __init__(self, sub_window1: QWidget):
+# SubWindow33 - Reload configurations
+class SubWindow33(QWidget):
+    def __init__(self, sub_window3: QWidget):
         super().__init__()
-        self.sub_window1 = sub_window1
+        self.sub_window3 = sub_window3
         self.initUI()
         self.setFixedSize(400, 300)
 
@@ -28,7 +28,7 @@ class SubWindow13(QWidget):
         if not os.path.exists(dir_1):
             os.mkdir(dir_1)
 
-        dir_2 = os.path.join(dir_1, '319 - IV Helper')
+        dir_2 = os.path.join(dir_1, '319[1] - IV Helper')
         if not os.path.exists(dir_2):
             os.mkdir(dir_2)
 
@@ -82,7 +82,7 @@ class SubWindow13(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('319 - Reload configurations')
+        self.setWindowTitle('319[1] - Reload configurations')
 
     def on_change(self):
         low_to_high = self.dropdown_box.currentText()
@@ -107,17 +107,5 @@ class SubWindow13(QWidget):
     def back(self):
         pos = self.pos()
         self.hide()
-        self.sub_window1.move(pos)
-        self.sub_window1.show()
-
-
-
-
-
-
-
-
-
-
-
-
+        self.sub_window3.move(pos)
+        self.sub_window3.show()

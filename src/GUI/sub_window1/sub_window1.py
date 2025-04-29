@@ -9,7 +9,7 @@ from GUI.sub_window1.sub_window13 import SubWindow13
 
 # SubWindow1 - 319 IV Helper
 class SubWindow1(QWidget):
-    def __init__(self, main_window):
+    def __init__(self, main_window: QWidget):
         super().__init__()
         self.main_window = main_window
         self.initUI()
@@ -33,7 +33,6 @@ class SubWindow1(QWidget):
 
         button_3 = QPushButton('Reload configurations', self)
         button_3.clicked.connect(self.open_sub_window13)
-
 
         button_4 = QPushButton('Back', self)
         button_4.clicked.connect(self.back)

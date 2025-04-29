@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QProgress
 
 # SubWindow21ProgressForm
 class SubWindow21ProgressForm(QWidget):
-    def __init__(self, sub_window21):
+    def __init__(self, sub_window21: QWidget):
         super().__init__()
         self.sub_window21 = sub_window21
         self.initUI()
@@ -59,5 +59,6 @@ class SubWindow21ProgressForm(QWidget):
     def back(self):
         pos = self.pos()
         self.hide()
+        self.sub_window21.reset_layout()
         self.sub_window21.move(pos)
         self.sub_window21.show()

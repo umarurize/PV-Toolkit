@@ -4,16 +4,16 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
-from GUI.sub_window1.sub_window12_curve_preview_form import Subwindow12CurvePreviewForm
+from GUI.sub_window4.sub_window4_curve_preview_form import SubWindow4CurvePreviewForm
 
-from Functions.iv_curve_preview import curve_preview
+from Functions.eqe_helper import curve_preview_four
 
 
-# SubWindow12 - 319 Preview J-V curve
-class SubWindow12(QWidget):
-    def __init__(self, sub_window1: QWidget):
+# SubWindow4 - 317 EQE Helper
+class SubWindow4(QWidget):
+    def __init__(self, main_window: QWidget):
         super().__init__()
-        self.sub_window1 = sub_window1
+        self.main_window = main_window
         self.initUI()
         self.setFixedSize(400, 300)
         self.setAcceptDrops(True)
@@ -48,7 +48,7 @@ class SubWindow12(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('319 - Preview J-V curve')
+        self.setWindowTitle('317 - EQE Helper')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() and len(event.mimeData().urls()) == 1:
@@ -83,47 +83,38 @@ class SubWindow12(QWidget):
         pos = self.pos()
         self.hide()
         self.reset_layout()
-        self.sub_window1.move(pos)
-        self.sub_window1.show()
+        self.main_window.move(pos)
+        self.main_window.show()
 
     def process(self):
         pos = self.pos()
         self.hide()
 
-        self.sub_window12_curve_preview_form = Subwindow12CurvePreviewForm(self)
+        self.sub_window4_curve_preview_form = SubWindow4CurvePreviewForm(self)
 
         path = self.path_label.text().split('\n')[1]
 
-        data_intime = curve_preview(path)
+        data_intime = curve_preview_four(path)
 
-        if len(data_intime) == 2:
-            result_text = ('> Result\n'
-                           'Whoops! It is a bad data...')
-            self.sub_window12_curve_preview_form.result.setText(result_text)
-        else:
-            img_bytes = data_intime[-1].read()
+        img_bytes = data_intime[-1].read()
 
-            img = QImage()
-            img.loadFromData(img_bytes)
+        img = QImage()
+        img.loadFromData(img_bytes)
 
-            pixmap = QPixmap.fromImage(img)
-            width = 400
-            height = 300
-            pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
+        pixmap = QPixmap.fromImage(img)
+        width = 400
+        height = 300
+        pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
 
-            result_text = '> Result\n'
-            result_text += f'Name: {data_intime[0]}\n'
-            result_text += f'Area: {data_intime[1]}\n'
-            result_text += f'Voc: {data_intime[2]}\n'
-            result_text += f'Jsc: {data_intime[3]}\n'
-            result_text += f'FF: {data_intime[4]}\n'
-            result_text += f'PCE: {data_intime[5]}\n'
-            result_text += f'Mode: {data_intime[6]}'
+        result_text = '> Result\n'
+        result_text += f'Name: {data_intime[0]}\n'
+        result_text += f'Cal.Jsc: {data_intime[1]}'
 
-            self.sub_window12_curve_preview_form.result.setText(result_text)
+        self.sub_window4_curve_preview_form.result.setText(result_text)
 
-            self.sub_window12_curve_preview_form.preview.setPixmap(pixmap)
-            self.sub_window12_curve_preview_form.preview.show()
+        self.sub_window4_curve_preview_form.preview.setPixmap(pixmap)
+        self.sub_window4_curve_preview_form.preview.show()
+        self.sub_window4_curve_preview_form.button1.show()
 
-        self.sub_window12_curve_preview_form.move(pos)
-        self.sub_window12_curve_preview_form.show()
+        self.sub_window4_curve_preview_form.move(pos)
+        self.sub_window4_curve_preview_form.show()

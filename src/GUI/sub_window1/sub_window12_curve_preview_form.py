@@ -3,9 +3,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
 
-# Subwindow12CurvePreviewForm
+# SubWindow12CurvePreviewForm
 class Subwindow12CurvePreviewForm(QWidget):
-    def __init__(self, sub_window12):
+    def __init__(self, sub_window12: QWidget):
         super().__init__()
         self.sub_window12 = sub_window12
         self.initUI()
@@ -21,9 +21,7 @@ class Subwindow12CurvePreviewForm(QWidget):
         self.result = QLabel('', self)
 
         self.preview = QLabel(self)
-
-        self.transfer_button = QPushButton('Transfer')
-        self.transfer_button.hide()
+        self.preview.hide()
 
         button = QPushButton('Back', self)
         button.clicked.connect(self.back)
@@ -36,11 +34,10 @@ class Subwindow12CurvePreviewForm(QWidget):
         self.setWindowIcon(icon)
         self.setWindowTitle('319 - Preview J-V curve')
 
-    def transfer(self):
-        pass
-
     def back(self):
         pos = self.pos()
         self.hide()
+        self.preview.hide()
+        self.sub_window12.reset_layout()
         self.sub_window12.move(pos)
         self.sub_window12.show()

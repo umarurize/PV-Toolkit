@@ -82,7 +82,7 @@ def curve_preview_two(path: str, device_area: str) -> list:
         P_max_reverse = max(temple_list_reverse)
 
         FF_reverse = P_max_reverse / abs(recorder_reverse[0] * recorder_reverse[1] * 1000 / device_area)
-        result.append(round(FF_reverse, 4))
+        result.append(round(FF_reverse * 100, 4))
         recorder_reverse.append(FF_reverse)
 
         PCE_reverse = abs(recorder_reverse[0] * recorder_reverse[1] * recorder_reverse[2] * 1000 / device_area)
@@ -122,7 +122,7 @@ def curve_preview_two(path: str, device_area: str) -> list:
         P_max_forward = max(temple_list_forward)
 
         FF_forward = P_max_forward / abs(recorder_forward[0] * recorder_forward[1] * 1000 / device_area)
-        result.append(round(FF_forward, 4))
+        result.append(round(FF_forward * 100, 4))
         recorder_forward.append(FF_forward)
 
         PCE_forward = abs(recorder_forward[0] * recorder_forward[1] * recorder_forward[2] * 1000 / device_area)
@@ -223,10 +223,10 @@ def curve_preview_two(path: str, device_area: str) -> list:
     return result
 
 
-def type_transfer(path: str):
+def type_transfer(path: str, device_area: str):
     path = path.replace('/', '\\')
 
-    print(path)
+    device_area = eval(device_area)
 
     index = path.rfind('\\')
     workbook_name = path[index+1:].strip('.txt') + '.xlsx'
@@ -278,7 +278,7 @@ def type_transfer(path: str):
                 raw_data.append(
                     [
                         eval(content[1]),
-                        eval(content[0]),
+                        eval(content[0]) * 1000 / device_area,
                         '',
                         ''
                     ]
@@ -287,9 +287,9 @@ def type_transfer(path: str):
                 raw_data.append(
                     [
                         eval(content[1]),
-                        eval(content[0]),
+                        eval(content[0]) * 1000 / device_area,
                         eval(content[4]),
-                        eval(content[3])
+                        eval(content[3]) * 1000 / device_area
                     ]
                 )
 
