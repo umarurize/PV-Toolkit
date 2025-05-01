@@ -40,6 +40,7 @@ class SubWindow21ProgressForm(QWidget):
         self.result_intime_sheet.setHorizontalHeaderLabels(headers)
 
         self.result_message = QLabel('')
+        self.result_message.setWordWrap(True)
         self.result_message.hide()
 
         self.button = QPushButton('Back', self)

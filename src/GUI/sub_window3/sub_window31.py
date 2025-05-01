@@ -37,6 +37,7 @@ class SubWindow31(QWidget):
         )
 
         self.path_label = QLabel('', self)
+        self.path_label.setWordWrap(True)
         self.path_label.hide()
 
         self.text_input = QLineEdit(self)

@@ -37,6 +37,7 @@ class SubWindow12(QWidget):
         )
 
         self.path_label = QLabel('', self)
+        self.path_label.setWordWrap(True)
         self.path_label.hide()
 
         self.button1 = QPushButton('Preview', self)
