@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
 from GUI.window_scale import get_scale_factor
 
-from Functions.iv_curve_preview_three import type_transfer_two
+from Functions.iv_curve_preview_three import type_converse_two
 
 
 # SubWindow32CurvePreviewForm
@@ -29,12 +29,12 @@ class SubWindow32CurvePreviewForm(QWidget):
         self.preview = QLabel(self)
         self.preview.hide()
 
-        self.button1 = QPushButton('Transfer', self)
-        self.button1.clicked.connect(self.transfer)
+        self.button1 = QPushButton('Converse', self)
+        self.button1.clicked.connect(self.converse)
         self.button1.hide()
 
-        self.transfer_message = QLabel('Successfully transfered...', self)
-        self.transfer_message.hide()
+        self.converse_message = QLabel('Successfully conversed...', self)
+        self.converse_message.hide()
 
         button2 = QPushButton('Back', self)
         button2.clicked.connect(self.back)
@@ -42,26 +42,26 @@ class SubWindow32CurvePreviewForm(QWidget):
         layout.addWidget(self.result)
         layout.addWidget(self.preview)
         layout.addWidget(self.button1)
-        layout.addWidget(self.transfer_message)
+        layout.addWidget(self.converse_message)
         layout.addWidget(button2)
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
         self.setWindowTitle('319[1] - Preview and tranfer J-V curve')
 
-    def transfer(self):
+    def converse(self):
         path = self.sub_window32.path_label.text().split('\n')[1]
         area = self.sub_window32.text_input.text()
-        type_transfer_two(path, area)
+        type_converse_two(path, area)
         self.button1.hide()
-        self.transfer_message.show()
+        self.converse_message.show()
 
     def back(self):
         pos = self.pos()
         self.hide()
         self.preview.hide()
         self.button1.hide()
-        self.transfer_message.hide()
+        self.converse_message.hide()
         self.sub_window32.reset_layout()
         self.sub_window32.move(pos)
         self.sub_window32.show()

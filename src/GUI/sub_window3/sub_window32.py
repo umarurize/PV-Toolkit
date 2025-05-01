@@ -11,7 +11,7 @@ from GUI.sub_window3.sub_window32_curve_preview_form import SubWindow32CurvePrev
 from Functions.iv_curve_preview_three import curve_preview_three
 
 
-# SubWindow32 - 319[1] Preview and tarnsfer J-V curve
+# SubWindow32 - 319[1] Preview and converse J-V curve
 class SubWindow32(QWidget):
     def __init__(self, sub_window3: QWidget):
         super().__init__()
@@ -58,7 +58,7 @@ class SubWindow32(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('319[1] - Preview and transfer J-V curve')
+        self.setWindowTitle('319[1] - Preview and converse J-V curve')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() and len(event.mimeData().urls()) == 1:

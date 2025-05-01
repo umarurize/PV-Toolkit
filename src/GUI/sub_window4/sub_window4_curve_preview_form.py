@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
 from GUI.window_scale import get_scale_factor
 
-from Functions.eqe_helper import type_transfer_three
+from Functions.eqe_helper import type_converse_three
 
 
 # SubWindow4CurvePreviewForm
@@ -30,12 +30,12 @@ class SubWindow4CurvePreviewForm(QWidget):
         self.preview = QLabel(self)
         self.preview.hide()
 
-        self.button1 = QPushButton('Transfer', self)
-        self.button1.clicked.connect(self.transfer)
+        self.button1 = QPushButton('Converse', self)
+        self.button1.clicked.connect(self.converse)
         self.button1.hide()
 
-        self.transfer_message = QLabel('Successfully transfered...', self)
-        self.transfer_message.hide()
+        self.converse_message = QLabel('Successfully conversed...', self)
+        self.converse_message.hide()
 
         button2 = QPushButton('Back', self)
         button2.clicked.connect(self.back)
@@ -44,25 +44,25 @@ class SubWindow4CurvePreviewForm(QWidget):
         layout.addWidget(self.result)
         layout.addWidget(self.preview)
         layout.addWidget(self.button1)
-        layout.addWidget(self.transfer_message)
+        layout.addWidget(self.converse_message)
         layout.addWidget(button2)
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
         self.setWindowTitle('317 - EQE Helper')
 
-    def transfer(self):
+    def converse(self):
         path: str = self.sub_window4.path_label.text().split('\n')[1]
-        type_transfer_three(path)
+        type_converse_three(path)
         self.button1.hide()
-        self.transfer_message.show()
+        self.converse_message.show()
 
 
     def back(self):
         pos = self.pos()
         self.hide()
         self.preview.hide()
-        self.transfer_message.hide()
+        self.converse_message.hide()
         self.sub_window4.reset_layout()
         self.sub_window4.move(pos)
         self.sub_window4.show()

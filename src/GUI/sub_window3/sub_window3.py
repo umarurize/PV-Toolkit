@@ -32,7 +32,7 @@ class SubWindow3(QWidget):
         button1 = QPushButton('Output report', self)
         button1.clicked.connect(self.open_sub_window31)
 
-        button2 = QPushButton('Preview and transfer J-V curve', self)
+        button2 = QPushButton('Preview and converse J-V curve', self)
         button2.clicked.connect(self.open_sub_window32)
 
         button3 = QPushButton('Reload configurations', self)

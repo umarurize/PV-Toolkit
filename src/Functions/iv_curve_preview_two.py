@@ -223,7 +223,7 @@ def curve_preview_two(path: str, device_area: str) -> list:
     return result
 
 
-def type_transfer(path: str, device_area: str):
+def type_converse(path: str, device_area: str):
     path = path.replace('/', '\\')
 
     device_area = eval(device_area)

@@ -165,7 +165,7 @@ def curve_preview_three(path: str, device_area: str):
     return result
 
 
-def type_transfer_two(path: str, device_area: str):
+def type_converse_two(path: str, device_area: str):
     path = path.replace('/', '\\')
 
     device_area = eval(device_area)

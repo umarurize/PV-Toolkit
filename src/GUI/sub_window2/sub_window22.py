@@ -11,7 +11,7 @@ from GUI.sub_window2.sub_window22_curve_preview_form import Subwindow22CurvePrev
 from Functions.iv_curve_preview_two import curve_preview_two
 
 
-# SubWindow22 - 1428 Preview and transfer J-V curve
+# SubWindow22 - 1428 Preview and converse J-V curve
 class SubWindow22(QWidget):
     def __init__(self, sub_window2: QWidget):
         super().__init__()
@@ -58,7 +58,7 @@ class SubWindow22(QWidget):
 
         self.setLayout(layout)
         self.setWindowIcon(icon)
-        self.setWindowTitle('1428 - Preview and transfer J-V curve')
+        self.setWindowTitle('1428 - Preview and converse J-V curve')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls() and len(event.mimeData().urls()) == 1:

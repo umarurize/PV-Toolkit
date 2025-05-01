@@ -113,7 +113,7 @@ def curve_preview_four(path: str):
 
     return result
 
-def type_transfer_three(path: str) -> None:
+def type_converse_three(path: str) -> None:
     path = path.replace('/', '\\')
 
     index = path.rfind('\\')
