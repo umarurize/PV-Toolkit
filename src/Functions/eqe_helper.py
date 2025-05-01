@@ -1,8 +1,10 @@
 import io
+import os.path
 
 import plotly.graph_objs as go
-from plotly.subplots import make_subplots
 import plotly.io as pio
+from plotly.subplots import make_subplots
+from xlsxwriter import Workbook
 
 
 def curve_preview_four(path: str):
@@ -111,12 +113,61 @@ def curve_preview_four(path: str):
 
     return result
 
+def type_transfer_three(path: str) -> None:
+    path = path.replace('/', '\\')
 
+    index = path.rfind('\\')
+    workbook_name = path[index+1:].strip('.txt') + '.xlsx'
+    workbook_path = os.path.join(path[0: index+1], workbook_name)
 
+    workbook = Workbook(workbook_path)
 
+    workbook_format_1 = workbook.add_format(
+        {
+            'align': 'center'
+        }
+    )
 
+    workbook_format_2 = workbook.add_format(
+        {
+            'align': 'center',
+            'font_color': 'red',
+            'bold': True
+        }
+    )
 
+    worksheet = workbook.add_worksheet('data')
+    sheet_header_list = [
+        'Lambda (nm)',
+        'EQE (%)',
+        'Jsc (mA/cm^2)'
+    ]
+    for i in range(len(sheet_header_list)):
+        worksheet.write(0, i, sheet_header_list[i], workbook_format_2)
 
+    raw_data = []
+    raw_Jsc_data = []
+    with open(path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
 
+        for line in lines[5:]:
+            content = line.strip('\n').split('\t')
 
+            raw_Jsc_data.append(eval(content[3]))
 
+            raw_data.append(
+                [
+                    eval(content[0]), # Lambda
+                    eval(content[1]), # EQE
+                    sum(raw_Jsc_data) # Cal.Jsc
+                ]
+            )
+
+    row_num = 1
+    for data in raw_data:
+        if row_num <= len(raw_data):
+            for i in range(3):
+                worksheet.write(row_num, i, data[i], workbook_format_1)
+            row_num += 1
+
+    workbook.close()

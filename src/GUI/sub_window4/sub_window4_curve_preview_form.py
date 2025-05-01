@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
 from GUI.window_scale import get_scale_factor
 
+from Functions.eqe_helper import type_transfer_three
+
 
 # SubWindow4CurvePreviewForm
 class SubWindow4CurvePreviewForm(QWidget):
@@ -50,7 +52,11 @@ class SubWindow4CurvePreviewForm(QWidget):
         self.setWindowTitle('317 - EQE Helper')
 
     def transfer(self):
-        pass
+        path: str = self.sub_window4.path_label.text().split('\n')[1]
+        type_transfer_three(path)
+        self.button1.hide()
+        self.transfer_message.show()
+
 
     def back(self):
         pos = self.pos()
