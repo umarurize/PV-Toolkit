@@ -4,6 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QTableWidgetItem
 
+from GUI.window_scale import get_scale_factor
+
 from GUI.sub_window2.sub_window22_curve_preview_form import Subwindow22CurvePreviewForm
 
 from Functions.iv_curve_preview_two import curve_preview_two
@@ -15,7 +17,10 @@ class SubWindow22(QWidget):
         super().__init__()
         self.sub_window2 = sub_window2
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
         self.setAcceptDrops(True)
 
     def initUI(self):
@@ -134,6 +139,7 @@ class SubWindow22(QWidget):
             for i in range(2):
                 row_count = self.sub_window22_curve_preview_form.result_sheet.rowCount()
                 self.sub_window22_curve_preview_form.result_sheet.insertRow(row_count)
+                self.sub_window22_curve_preview_form.result_sheet.setRowHeight(row_count, int(25 * get_scale_factor()))
                 if i == 0:
                     result = ['Reverse'] + [str(i) for i in data_in_time[2:6]]
                 else:
@@ -152,8 +158,9 @@ class SubWindow22(QWidget):
             img.loadFromData(img_bytes)
 
             pixmap = QPixmap.fromImage(img)
-            width = 400
-            height = 300
+            scale_factor = get_scale_factor()
+            width = int(400 * scale_factor)
+            height = int(300 * scale_factor)
             pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
 
             self.sub_window22_curve_preview_form.result.setText(result_text)

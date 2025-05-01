@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
+from GUI.window_scale import get_scale_factor
 
 # SubWindow12CurvePreviewForm
 class Subwindow12CurvePreviewForm(QWidget):
@@ -9,7 +10,10 @@ class Subwindow12CurvePreviewForm(QWidget):
         super().__init__()
         self.sub_window12 = sub_window12
         self.initUI()
-        self.setFixedSize(400, 450)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(450 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()

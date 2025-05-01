@@ -4,6 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit
 
+from GUI.window_scale import get_scale_factor
+
 from GUI.sub_window3.sub_window32_curve_preview_form import SubWindow32CurvePreviewForm
 
 from Functions.iv_curve_preview_three import curve_preview_three
@@ -15,7 +17,10 @@ class SubWindow32(QWidget):
         super().__init__()
         self.sub_window3 = sub_window3
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
         self.setAcceptDrops(True)
 
     def initUI(self):
@@ -129,8 +134,8 @@ class SubWindow32(QWidget):
             img.loadFromData(img_bytes)
 
             pixmap = QPixmap.fromImage(img)
-            width = 400
-            height = 300
+            width = int(400 * get_scale_factor())
+            height = int(300 * get_scale_factor())
             pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
 
             result_text = '> Result\n'

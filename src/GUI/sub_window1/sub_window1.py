@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
+from GUI.window_scale import get_scale_factor
+
 from GUI.sub_window1.sub_window11 import SubWindow11
 from GUI.sub_window1.sub_window12 import SubWindow12
 from GUI.sub_window1.sub_window13 import SubWindow13
@@ -13,7 +15,10 @@ class SubWindow1(QWidget):
         super().__init__()
         self.main_window = main_window
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()
@@ -23,7 +28,6 @@ class SubWindow1(QWidget):
         icon = QIcon('resources/logo.ico')
 
         prompt_label = QLabel('Please select a function...')
-        prompt_label.setFixedSize(300, 10)
 
         button_1 = QPushButton('Output report', self)
         button_1.clicked.connect(self.open_sub_window11)

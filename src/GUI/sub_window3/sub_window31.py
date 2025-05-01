@@ -4,6 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import  QDropEvent, QDragEnterEvent, QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QApplication, QTableWidgetItem, QLineEdit
 
+from GUI.window_scale import get_scale_factor
+
 from GUI.sub_window3.sub_window31_progress_form import SubWindow31ProgressForm
 
 from Functions.iv_helper_three import data_process_three
@@ -15,7 +17,10 @@ class SubWindow31(QWidget):
         super().__init__()
         self.sub_window3 = sub_window3
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
         self.setAcceptDrops(True)
 
     def initUI(self):
@@ -136,6 +141,7 @@ class SubWindow31(QWidget):
 
             row_count = self.sub_window31_progress_form.result_intime_sheet.rowCount()
             self.sub_window31_progress_form.result_intime_sheet.insertRow(row_count)
+            self.sub_window31_progress_form.result_intime_sheet.setRowHeight(row_count, int(25 * get_scale_factor()))
             for col in range(5):
                 item = QTableWidgetItem(result_intime[col])
                 self.sub_window31_progress_form.result_intime_sheet.setItem(

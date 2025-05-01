@@ -5,6 +5,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox
 
+from GUI.window_scale import get_scale_factor
+
 
 # SubWindow33 - Reload configurations
 class SubWindow33(QWidget):
@@ -12,7 +14,10 @@ class SubWindow33(QWidget):
         super().__init__()
         self.sub_window3 = sub_window3
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()

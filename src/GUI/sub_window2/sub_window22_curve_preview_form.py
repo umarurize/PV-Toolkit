@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QTableWidget
 
+from GUI.window_scale import get_scale_factor
+
 from Functions.iv_curve_preview_two import type_transfer
 
 
@@ -11,7 +13,10 @@ class Subwindow22CurvePreviewForm(QWidget):
         super().__init__()
         self.sub_window22 = sub_window22
         self.initUI()
-        self.setFixedSize(400, 550)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(550 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()
@@ -26,7 +31,7 @@ class Subwindow22CurvePreviewForm(QWidget):
         self.result_sheet.setRowCount(0)
         self.result_sheet.setColumnCount(5)
         for i in range(5):
-            self.result_sheet.setColumnWidth(i, 70)
+            self.result_sheet.setColumnWidth(i, int(70 * get_scale_factor()))
         headers = ['Mode','Voc', 'Jsc', 'FF', 'PCE']
         self.result_sheet.setHorizontalHeaderLabels(headers)
         self.result_sheet.hide()

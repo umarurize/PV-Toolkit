@@ -1,11 +1,12 @@
-import json
 import os
 import sys
 import plotly.graph_objs as go
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
+
+from GUI.window_scale import get_scale_factor
 
 from GUI.sub_window1.sub_window1 import SubWindow1
 from GUI.sub_window2.sub_window2 import SubWindow2
@@ -13,12 +14,27 @@ from GUI.sub_window3.sub_window3 import SubWindow3
 from GUI.sub_window4.sub_window4 import SubWindow4
 
 
+
+# Initial Kaleido
+class InitialKaleido(QThread):
+    status_signal = pyqtSignal(str)
+
+    def run(self):
+        fig = go.Figure()
+        fig.write_image('initial.png', engine='kaleido')
+        os.remove('initial.png')
+        self.status_signal.emit('yes')
+
+
 # Main window
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()
@@ -67,18 +83,18 @@ class MainWindow(QWidget):
         self.sub_window3 = SubWindow3(self)
         self.sub_window4 = SubWindow4(self)
 
-    def initial_kaleido(self):
-        # Initial kaledio
-        QApplication.processEvents()
-        fig = go.Figure()
-        fig.write_image('initial.png', engine='kaleido')
-        os.remove('initial.png')
-        self.pre_label.setText('Ready for use...')
-        self.author_label.show()
-        self.button_1.show()
-        self.button_2.show()
-        self.button_3.show()
-        self.button_4.show()
+        self.initial_kaleido = InitialKaleido()
+        self.initial_kaleido.status_signal.connect(self.update_layout)
+        self.initial_kaleido.start()
+
+    def update_layout(self, status_signal):
+        if status_signal == 'yes':
+            self.pre_label.setText('> Ready for use...')
+            self.author_label.show()
+            self.button_1.show()
+            self.button_2.show()
+            self.button_3.show()
+            self.button_4.show()
 
     def open_sub_window1(self):
         pos = self.pos()
@@ -109,5 +125,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_window = MainWindow()
     main_window.show()
-    main_window.initial_kaleido()
     sys.exit(app.exec_())

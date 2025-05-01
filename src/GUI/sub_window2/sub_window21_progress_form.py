@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QProgressBar, QTableWidget
 
+from GUI.window_scale import get_scale_factor
+
 
 # SubWindow21ProgressForm
 class SubWindow21ProgressForm(QWidget):
@@ -9,7 +11,10 @@ class SubWindow21ProgressForm(QWidget):
         super().__init__()
         self.sub_window21 = sub_window21
         self.initUI()
-        self.setFixedSize(400, 300)
+        self.setFixedSize(
+            int(400 * get_scale_factor()),
+            int(300 * get_scale_factor())
+        )
 
     def initUI(self):
         layout = QVBoxLayout()
@@ -29,7 +34,7 @@ class SubWindow21ProgressForm(QWidget):
         self.result_intime_sheet.setRowCount(0)
         self.result_intime_sheet.setColumnCount(9)
         for i in range(9):
-            self.result_intime_sheet.setColumnWidth(i, 65)
+            self.result_intime_sheet.setColumnWidth(i, int(65 * get_scale_factor()))
         headers = ['Name', 'Voc_1', 'Jsc_1', 'FF_1', 'PCE_1',
                    'Voc_2', 'Jsc_2', 'FF_2', 'PCE_2']
         self.result_intime_sheet.setHorizontalHeaderLabels(headers)
