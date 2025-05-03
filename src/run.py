@@ -12,7 +12,7 @@ from GUI.sub_window1.sub_window1 import SubWindow1
 from GUI.sub_window2.sub_window2 import SubWindow2
 from GUI.sub_window3.sub_window3 import SubWindow3
 from GUI.sub_window4.sub_window4 import SubWindow4
-
+from GUI.sub_window5.sub_window5 import SubWindow5
 
 
 # Initial Kaleido
@@ -67,12 +67,18 @@ class MainWindow(QWidget):
         self.button_4.clicked.connect(self.open_sub_window4)
         self.button_4.hide()
 
+        self.button_5 = QPushButton('319 - Steady Current Helper', self)
+        self.button_5.clicked.connect(self.open_sub_window5)
+        self.button_5.hide()
+
+
         layout.addWidget(self.pre_label)
         layout.addWidget(self.author_label)
         layout.addWidget(self.button_1)
         layout.addWidget(self.button_2)
         layout.addWidget(self.button_3)
         layout.addWidget(self.button_4)
+        layout.addWidget(self.button_5)
 
         self.setLayout(layout)
         self.setWindowTitle('PV-Toolkit')
@@ -82,6 +88,7 @@ class MainWindow(QWidget):
         self.sub_window2 = SubWindow2(self)
         self.sub_window3 = SubWindow3(self)
         self.sub_window4 = SubWindow4(self)
+        self.sub_window5 = SubWindow5(self)
 
         self.initial_kaleido = InitialKaleido()
         self.initial_kaleido.status_signal.connect(self.update_layout)
@@ -95,6 +102,7 @@ class MainWindow(QWidget):
             self.button_2.show()
             self.button_3.show()
             self.button_4.show()
+            self.button_5.show()
 
     def open_sub_window1(self):
         pos = self.pos()
@@ -120,6 +128,11 @@ class MainWindow(QWidget):
         self.sub_window4.move(pos)
         self.sub_window4.show()
 
+    def open_sub_window5(self):
+        pos = self.pos()
+        self.hide()
+        self.sub_window5.move(pos)
+        self.sub_window5.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

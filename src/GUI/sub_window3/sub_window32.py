@@ -149,8 +149,8 @@ class SubWindow32(QWidget):
             result_text += f'Mode: {data_intime[6]}'
 
             self.sub_window32_curve_preview_form.result.setText(result_text)
-
             self.sub_window32_curve_preview_form.preview.setPixmap(pixmap)
+
             self.sub_window32_curve_preview_form.preview.show()
             self.sub_window32_curve_preview_form.button1.show()
 

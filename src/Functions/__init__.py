@@ -13,5 +13,6 @@ __all__ = [
     'iv_curve_preview_two',
     'iv_helper_three',
     'iv_curve_preview_three',
-    'eqe_helper'
+    'eqe_helper',
+    'steady_current_helper'
 ]
