@@ -1,8 +1,8 @@
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
+from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon, QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QScrollArea
 
 from GUI.window_scale import get_scale_factor
 
@@ -15,6 +15,7 @@ from Functions.eqe_helper import curve_preview_four
 class SubWindow4(QWidget):
     def __init__(self, main_window: QWidget):
         super().__init__()
+        self.setWindowOpacity(0.9)
         self.main_window = main_window
         self.initUI()
         self.setFixedSize(
@@ -24,11 +25,23 @@ class SubWindow4(QWidget):
         self.setAcceptDrops(True)
 
     def initUI(self):
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+
+        function_widget = QWidget()
+        layout = QVBoxLayout(function_widget)
         layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(10)
+        layout.setSpacing(int(10 * get_scale_factor()))
 
         icon = QIcon('resources/logo.ico')
+
+        font = QFont()
+        font_size = int(8 * get_scale_factor())
+        font.setPointSize(font_size)
+        font.setFamily('Microsoft YaHei')
 
         self.prompt_label = QLabel(
             '> Please drag the target file here...\n'
@@ -52,8 +65,12 @@ class SubWindow4(QWidget):
         layout.addWidget(self.button1)
         layout.addWidget(button2)
 
-        self.setLayout(layout)
+        scroll_area.setWidget(function_widget)
+        main_layout.addWidget(scroll_area)
+
+        self.setLayout(main_layout)
         self.setWindowIcon(icon)
+        self.setFont(font)
         self.setWindowTitle('317 - EQE Helper')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
@@ -108,9 +125,14 @@ class SubWindow4(QWidget):
         img.loadFromData(img_bytes)
 
         pixmap = QPixmap.fromImage(img)
-        width = int(400 * get_scale_factor())
-        height = int(300 * get_scale_factor())
-        pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
+        pixmap_width = int(340 * get_scale_factor())
+        pixmap_height = int(340 * get_scale_factor())
+        pixmap = pixmap.scaled(
+            pixmap_width,
+            pixmap_height,
+            Qt.KeepAspectRatio,
+            Qt.SmoothTransformation
+        )
 
         result_text = '> Result\n'
         result_text += f'Name: {data_intime[0]}\n'

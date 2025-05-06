@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
+from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QScrollArea
 
 from GUI.window_scale import get_scale_factor
 
@@ -13,6 +13,7 @@ from GUI.sub_window1.sub_window13 import SubWindow13
 class SubWindow1(QWidget):
     def __init__(self, main_window: QWidget):
         super().__init__()
+        self.setWindowOpacity(0.9)
         self.main_window = main_window
         self.initUI()
         self.setFixedSize(
@@ -21,11 +22,23 @@ class SubWindow1(QWidget):
         )
 
     def initUI(self):
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+
+        function_widget = QWidget()
+        layout = QVBoxLayout(function_widget)
         layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(10)
+        layout.setSpacing(int(10 * get_scale_factor()))
 
         icon = QIcon('resources/logo.ico')
+
+        font = QFont()
+        font_size = int(8 * get_scale_factor())
+        font.setPointSize(font_size)
+        font.setFamily('Microsoft YaHei')
 
         prompt_label = QLabel('Please select a function...')
 
@@ -47,8 +60,12 @@ class SubWindow1(QWidget):
         layout.addWidget(button_3)
         layout.addWidget(button_4)
 
-        self.setLayout(layout)
+        scroll_area.setWidget(function_widget)
+        main_layout.addWidget(scroll_area)
+
+        self.setLayout(main_layout)
         self.setWindowIcon(icon)
+        self.setFont(font)
         self.setWindowTitle('319 - IV Helper')
 
         self.sub_window11 = SubWindow11(self)

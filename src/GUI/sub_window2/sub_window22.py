@@ -1,8 +1,8 @@
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QTableWidgetItem
+from PyQt5.QtGui import QDragEnterEvent, QDropEvent, QImage, QPixmap, QIcon, QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QLineEdit, QScrollArea
 
 from GUI.window_scale import get_scale_factor
 
@@ -15,6 +15,7 @@ from Functions.iv_curve_preview_two import curve_preview_two
 class SubWindow22(QWidget):
     def __init__(self, sub_window2: QWidget):
         super().__init__()
+        self.setWindowOpacity(0.9)
         self.sub_window2 = sub_window2
         self.initUI()
         self.setFixedSize(
@@ -24,11 +25,23 @@ class SubWindow22(QWidget):
         self.setAcceptDrops(True)
 
     def initUI(self):
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+
+        function_widget = QWidget()
+        layout = QVBoxLayout(function_widget)
         layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(10)
+        layout.setSpacing(int(10 * get_scale_factor()))
 
         icon = QIcon('resources/logo.ico')
+
+        font = QFont()
+        font_size = int(8 * get_scale_factor())
+        font.setPointSize(font_size)
+        font.setFamily('Microsoft YaHei')
 
         self.prompt_label = QLabel(
             '> Please drag the target file here...\n'
@@ -57,8 +70,12 @@ class SubWindow22(QWidget):
         layout.addWidget(self.button1)
         layout.addWidget(button2)
 
-        self.setLayout(layout)
+        scroll_area.setWidget(function_widget)
+        main_layout.addWidget(scroll_area)
+
+        self.setLayout(main_layout)
         self.setWindowIcon(icon)
+        self.setFont(font)
         self.setWindowTitle('1428 - Preview and converse J-V curve')
 
     def dragEnterEvent(self, event: QDragEnterEvent):
@@ -131,27 +148,21 @@ class SubWindow22(QWidget):
                            'Whoops! It is a bad data...')
             self.sub_window22_curve_preview_form.result.setText(result_text)
         else:
-            result_text = ('> Result\n'
-                           f'Name: {data_in_time[0]}\n'
-                           f'Area: {data_in_time[1]}\n')
             HI = str(round((data_in_time[5] - data_in_time[9]) / data_in_time[5], 4))
-            result_text += f'HI: {HI}'
-
-            for i in range(2):
-                row_count = self.sub_window22_curve_preview_form.result_sheet.rowCount()
-                self.sub_window22_curve_preview_form.result_sheet.insertRow(row_count)
-                self.sub_window22_curve_preview_form.result_sheet.setRowHeight(row_count, int(25 * get_scale_factor()))
-                if i == 0:
-                    result = ['Reverse'] + [str(i) for i in data_in_time[2:6]]
-                else:
-                    result = ['Forward'] + [str(i) for i in data_in_time[6:10]]
-                for col in range(5):
-                    item = QTableWidgetItem(result[col])
-                    self.sub_window22_curve_preview_form.result_sheet.setItem(
-                        row_count,
-                        col,
-                        item
-                    )
+            result_text = (
+                '> Result\n'
+                f'Name: {data_in_time[0]}\n'
+                f'Area: {data_in_time[1]}\n'
+                f'HI: {HI}\n'
+                +
+                '='*18
+                +
+                f'\nParas\tReverse\t Forward\n'
+                f'Voc\t{data_in_time[2]}\t {data_in_time[6]}\n'
+                f'Jsc\t{data_in_time[3]}\t {data_in_time[7]}\n'
+                f'FF\t{data_in_time[4]}\t {data_in_time[8]}\n'
+                f'PCE\t{data_in_time[5]}\t {data_in_time[9]}'
+            )
 
             img_bytes = data_in_time[-1].read()
 
@@ -160,12 +171,18 @@ class SubWindow22(QWidget):
 
             pixmap = QPixmap.fromImage(img)
             scale_factor = get_scale_factor()
-            width = int(400 * scale_factor)
-            height = int(300 * scale_factor)
-            pixmap = pixmap.scaled(width, height, Qt.KeepAspectRatio)
+            pixmap_width = int(340 * scale_factor)
+            pixmap_height = int(340 * scale_factor)
+            pixmap = pixmap.scaled(
+
+                pixmap_width,
+                pixmap_height,
+                Qt.KeepAspectRatio,
+                Qt.SmoothTransformation
+            )
 
             self.sub_window22_curve_preview_form.result.setText(result_text)
-            self.sub_window22_curve_preview_form.result_sheet.show()
+            '''self.sub_window22_curve_preview_form.result_sheet.show()'''
             self.sub_window22_curve_preview_form.preview.setPixmap(pixmap)
             self.sub_window22_curve_preview_form.preview.show()
             self.sub_window22_curve_preview_form.button1.show()

@@ -2,8 +2,8 @@ import os
 import json
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox
+from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QComboBox, QScrollArea
 
 from GUI.window_scale import get_scale_factor
 
@@ -12,6 +12,7 @@ from GUI.window_scale import get_scale_factor
 class SubWindow33(QWidget):
     def __init__(self, sub_window3: QWidget):
         super().__init__()
+        self.setWindowOpacity(0.9)
         self.sub_window3 = sub_window3
         self.initUI()
         self.setFixedSize(
@@ -20,11 +21,23 @@ class SubWindow33(QWidget):
         )
 
     def initUI(self):
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+
+        function_widget = QWidget()
+        layout = QVBoxLayout(function_widget)
         layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(10)
+        layout.setSpacing(int(10 * get_scale_factor()))
 
         icon = QIcon('resources/logo.ico')
+
+        font = QFont()
+        font_size = int(8 * get_scale_factor())
+        font.setPointSize(font_size)
+        font.setFamily('Microsoft YaHei')
 
         # Read config
         dir = os.getcwd()
@@ -58,8 +71,8 @@ class SubWindow33(QWidget):
         )
 
         self.config_label = QLabel(
-            f'- low_to_high: {self.config_data["low_to_high"]}\n'
-            f'- high_to_low: {self.config_data["high_to_low"]}',
+            f'- low_to_high: <span style="color:red">{self.config_data["low_to_high"]}</span><br>'
+            f'- high_to_low: <span style="color:red">{self.config_data["high_to_low"]}</span>',
             self
         )
 
@@ -76,7 +89,7 @@ class SubWindow33(QWidget):
             self.dropdown_box.addItems(['forward', 'reverse'])
         self.dropdown_box.currentIndexChanged.connect(self.on_change)
 
-        button = QPushButton('Back', self)
+        button = QPushButton('Save and back', self)
         button.clicked.connect(self.back)
 
         layout.addWidget(prompt_label)
@@ -85,8 +98,12 @@ class SubWindow33(QWidget):
         layout.addWidget(self.dropdown_box)
         layout.addWidget(button)
 
-        self.setLayout(layout)
+        scroll_area.setWidget(function_widget)
+        main_layout.addWidget(scroll_area)
+
+        self.setLayout(main_layout)
         self.setWindowIcon(icon)
+        self.setFont(font)
         self.setWindowTitle('319[1] - Reload configurations')
 
     def on_change(self):
@@ -105,8 +122,8 @@ class SubWindow33(QWidget):
             f.write(json_str)
 
         self.config_label.setText(
-            f'- low_to_high: {self.config_data["low_to_high"]}\n'
-            f'- high_to_low: {self.config_data["high_to_low"]}',
+            f'- low_to_high: <span style="color:red">{self.config_data["low_to_high"]}</span><br>'
+            f'- high_to_low: <span style="color:red">{self.config_data["high_to_low"]}</span>',
         )
 
     def back(self):

@@ -61,6 +61,20 @@ def curve_preview_four(path: str):
         )
 
         fig.update_layout(
+            annotations=[
+                dict(
+                    text='Powered by PV-Toolkit',
+                    xref="paper",
+                    yref="paper",
+                    x=0.5,
+                    y=0.5,
+                    showarrow=False,
+                    font=dict(
+                        size=36,
+                        color="rgba(128, 128, 128, 0.3)"
+                    )
+                )
+            ],
             xaxis=dict(
                 gridcolor='black',
                 linecolor='black',
@@ -102,7 +116,7 @@ def curve_preview_four(path: str):
 
             plot_bgcolor='white',
             paper_bgcolor='white',
-            margin=dict(l=55, r=65, t=45, b=55),
+            margin=dict(l=45, r=45, t=45, b=45),
             showlegend=False
         )
 
